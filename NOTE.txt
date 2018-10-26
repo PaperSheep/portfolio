@@ -1,0 +1,73 @@
+1.配置路由
+portfolio/portfolio/urls.py
+
+from . import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home),
+]
+
+2.在portfolio/portfolio/创建views.py
+
+from django.shortcuts import render
+
+
+def home(request):
+    return render(request, 'home.html')
+
+3.在portfolio/创建templates目录然后再在portfolio/templates/创建home.html
+
+<h1>这是主页</h1>
+
+4.修改portfolio/portfolio/settings.py
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['templates'],  # 修改这里
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+5.在portfolio/运行cmd
+
+python manage.py startapp gallery
+
+6.修改portfolio/portfolio/settings.py
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'gallery.apps.GalleryConfig',  # 新增了这里
+]
+
+7.修改portfolio\gallery\models.py
+
+class Gallery(models.Model):
+    description = models.CharField(max_length=100)
+
+8.修改portfolio\gallery\admin.py
+
+from django.contrib import admin
+from .models import Gallery
+
+# Register your models here.adm
+
+admin.site.register(Gallery)
+
+8.运行cmd python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+
